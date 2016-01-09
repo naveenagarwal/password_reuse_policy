@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Naveen Agarwal"]
   spec.email         = ["naveenagarwal287@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Setup password resuse policy for your app.}
+  spec.description   = %q{You can setup the check when a password can be reused by a user. It lets you configure the last 'n' password can not be used by user when they change it.}
+  spec.homepage      = "https://github.com/naveenagarwal/password_reuse_policy"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
