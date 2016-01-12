@@ -8,7 +8,7 @@ module PasswordReusePolicy
 
       def default!
         password_attribute_name = :password
-        unuse_last_passwords = 3
+        number_of_passwords_cannot_be_used = 3
       end
 
       def config
@@ -23,12 +23,12 @@ module PasswordReusePolicy
         @password_attribute_name = name.to_sym
       end
 
-      def unuses_last_passwords
-        @unuse_last_passwords ||= 3
+      def number_of_passwords_cannot_be_used
+        @number_of_passwords_cannot_be_used ||= 3
       end
 
-      def unuses_last_passwords=(number)
-        @unuse_last_passwords = number
+      def number_of_passwords_cannot_be_used=(number)
+        @number_of_passwords_cannot_be_used = number
       end
 
     end

@@ -8,16 +8,16 @@ describe PasswordReusePolicy::Configuration do
 
   it 'should have default configuration' do
     PasswordReusePolicy::Configuration.password_attribute_name.must_equal :password
-    PasswordReusePolicy::Configuration.unuses_last_passwords.must_equal 3
+    PasswordReusePolicy::Configuration.number_of_passwords_cannot_be_used.must_equal 3
   end
 
   it 'should abe able to override default configuration' do
     PasswordReusePolicy::Configuration.config do |c|
       c.password_attribute_name = :pass
-      c.unuses_last_passwords = 2
+      c.number_of_passwords_cannot_be_used = 2
     end
 
     PasswordReusePolicy::Configuration.password_attribute_name.must_equal :pass
-    PasswordReusePolicy::Configuration.unuses_last_passwords.must_equal 2
+    PasswordReusePolicy::Configuration.number_of_passwords_cannot_be_used.must_equal 2
   end
 end
