@@ -9,6 +9,7 @@ module PasswordReusePolicy
       def default!
         password_attribute_name = :encrypted_password
         number_of_passwords_cannot_be_used = 3
+        error_field_name = :password
       end
 
       def config
