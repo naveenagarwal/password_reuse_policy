@@ -44,14 +44,28 @@ describe PasswordReusePolicy::Mongo do
         include PasswordReusePolicy::Mongo
       end
     rescue NoMongoid::DocumentError => e
-      e.message.must_equal "It show never reach here"
+      e.message.must_equal "It should never reach here"
     end
   end
 
   describe "Persisted model specs" do
+    require 'mongoid'
+    require 'database_cleaner'
+
+    DatabaseCleaner.strategy = :truncation
+    Mongo::Logger.logger.level = ::Logger::ERROR
+
+    Mongoid.load!("#{File.dirname(__FILE__)}/config/mongoid.yml")
+
     before do
       PasswordReusePolicy::Configuration.default!
+      DatabaseCleaner.start
     end
+
+    after do
+      DatabaseCleaner.clean
+    end
+
     class User
       include Mongoid::Document
       include PasswordReusePolicy::Mongo
@@ -63,7 +77,8 @@ describe PasswordReusePolicy::Mongo do
 
     it "should define a field named last_used_passwords in the model when PasswordReusePolicy::Mongo is included" do
       User.new.respond_to?(:last_used_passwords).must_equal true
-      User.new.last_used_passwords.must_equal {}
+      value = {}
+      User.new.last_used_passwords.must_equal value
     end
 
     let(:user) { User.new }
@@ -82,6 +97,9 @@ describe PasswordReusePolicy::Mongo do
       user.errors.messages.must_be_empty
       n = PasswordReusePolicy::Configuration.number_of_passwords_cannot_be_used
       (0..n).to_a.any?{ |i| user.last_used_passwords[i.to_s] == user.encrypted_password }.must_equal true
+      user.encrypted_password = "pass2"
+      user.save
+      user.errors.messages.must_be_empty
       user.encrypted_password = "pass1"
       user.save
       user.errors.messages.wont_be_empty
@@ -100,7 +118,7 @@ describe PasswordReusePolicy::Mongo do
 
     it "should allow to reuse the password after the number_of_passwords_cannot_be_used limit reached" do
       2.times do
-        [1,2,3].each do |i|
+        [1,2,3,4].each do |i|
           user.encrypted_password = "pass#{i}"
           user.save
           user.errors.messages.must_be_empty
