@@ -13,14 +13,15 @@ module PasswordReusePolicy::Mongo
     private
 
     def password_has_changed?
-      changes[PasswordReusePolicy::Configuration.password_attribute_name.to_s].present?
+      changes[PasswordReusePolicy::Configuration.encrypted_password_attribute_name.to_s].present?
     end
 
     def set_last_used_passwords
       n = PasswordReusePolicy::Configuration.number_of_passwords_cannot_be_used
       return false if n < 1
-
-      new_password = public_send(PasswordReusePolicy::Configuration.password_attribute_name)
+      
+      encryption = PasswordReusePolicy::Configuration.encryption 
+      new_password = encryption.hexdigest public_send(PasswordReusePolicy::Configuration.plain_text_password_field_name)
 
       if self.last_used_passwords.values.include? new_password
         self.errors.add(PasswordReusePolicy::Configuration.error_field_name, "Password can't be same as last #{n} passwords")

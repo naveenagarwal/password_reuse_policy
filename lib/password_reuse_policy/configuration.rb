@@ -7,25 +7,34 @@ module PasswordReusePolicy
     class << self
 
       def default!
-        password_attribute_name = :encrypted_password
-        number_of_passwords_cannot_be_used = 3
-        error_field_name = :password
+        self.encrypted_password_attribute_name = :encrypted_password
+        self.number_of_passwords_cannot_be_used = 3
+	self.error_field_name = :password
+        self.plain_text_password_field_name = :password
       end
 
       def config
         yield self
       end
 
-      def password_attribute_name
-        @password_attribute_name ||= :encrypted_password
+      def plain_text_password_field_name
+	@plain_text_password_field_name
+      end
+	
+      def plain_text_password_field_name=(name)
+	@plain_text_password_field_name = name.to_sym
       end
 
-      def password_attribute_name=(name)
-        @password_attribute_name = name.to_sym
+      def encrypted_password_attribute_name
+        @encrypted_password_attribute_name
+      end
+
+      def encrypted_password_attribute_name=(name)
+        @encrypted_password_attribute_name = name.to_sym
       end
 
       def number_of_passwords_cannot_be_used
-        @number_of_passwords_cannot_be_used ||= 3
+        @number_of_passwords_cannot_be_used
       end
 
       def number_of_passwords_cannot_be_used=(number)
@@ -33,13 +42,15 @@ module PasswordReusePolicy
       end
 
       def error_field_name
-        @error_field_name ||= :password
+        @error_field_name
       end
 
       def error_field_name=(name)
         @error_field_name = name.to_sym
       end
-
+      def encryption
+	Digest::MD5
+      end
     end
 
   end
