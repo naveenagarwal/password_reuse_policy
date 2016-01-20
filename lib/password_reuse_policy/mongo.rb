@@ -5,15 +5,15 @@ module PasswordReusePolicy::Mongo
       raise NoMongoid::DocumentError, "Mongoid::Document is not inlcuded in the class" unless self.include? Mongoid::Document
 
       field :last_used_passwords, type: Hash, default: {}
-      before_save :set_last_used_passwords,  :if => :password_has_changed?
+      before_save :set_last_used_passwords,  :if => :password_present?
     end
   end
 
   module InstanceMethods
     private
 
-    def password_has_changed?
-      changes[PasswordReusePolicy::Configuration.encrypted_password_attribute_name.to_s].present?
+    def password_present?
+      send(PasswordReusePolicy::Configuration.password_field_name).present?
     end
 
     def set_last_used_passwords
@@ -21,7 +21,7 @@ module PasswordReusePolicy::Mongo
       return false if n < 1
       
       encryption = PasswordReusePolicy::Configuration.encryption 
-      new_password = encryption.hexdigest public_send(PasswordReusePolicy::Configuration.plain_text_password_field_name)
+      new_password = encryption.hexdigest public_send(PasswordReusePolicy::Configuration.password_field_name)
 
       if self.last_used_passwords.values.include? new_password
         self.errors.add(PasswordReusePolicy::Configuration.error_field_name, "Password can't be same as last #{n} passwords")
