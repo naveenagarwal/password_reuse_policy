@@ -6,4 +6,11 @@ ENV['RACK_ENV'] = 'test'
 require 'pry'
 require 'minitest/spec'
 require 'minitest/autorun'
+require 'simplecov'
+
+SimpleCov.start do
+end
+
 require 'password_reuse_policy'
+
+

@@ -2,11 +2,8 @@ require_relative 'spec_helper'
 
 describe PasswordReusePolicy::Configuration do
 
-  before do
-    PasswordReusePolicy::Configuration.default!
-  end
-
   it 'should have default configuration' do
+    PasswordReusePolicy::Configuration.default!
     PasswordReusePolicy::Configuration.number_of_passwords_cannot_be_used.must_equal 3
     PasswordReusePolicy::Configuration.error_field_name.must_equal :password
     PasswordReusePolicy::Configuration.password_field_name.must_equal :password

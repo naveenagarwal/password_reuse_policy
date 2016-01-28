@@ -8,7 +8,7 @@ module PasswordReusePolicy
 
       def default!
         self.number_of_passwords_cannot_be_used = 3
-	self.error_field_name = :password
+	      self.error_field_name = :password
         self.password_field_name = :password
       end
 
@@ -17,11 +17,11 @@ module PasswordReusePolicy
       end
 
       def password_field_name
-	@password_field_name
+        @password_field_name
       end
-	
+
       def password_field_name=(name)
-	@password_field_name = name.to_sym
+	      @password_field_name = name.to_sym
       end
 
       def number_of_passwords_cannot_be_used
@@ -39,9 +39,9 @@ module PasswordReusePolicy
       def error_field_name=(name)
         @error_field_name = name.to_sym
       end
-      
+
       def encryption
-	Digest::MD5
+	      Digest::MD5
       end
     end
 
