@@ -48,6 +48,8 @@ Link to sample applciation, devise is used for authentication, it uses password 
 
 To check the usage with active record visit
 [https://github.com/naveenagarwal/password_reuse_policy_testapp](https://github.com/naveenagarwal/password_reuse_policy_testapp)
+Make sure you have there is a column exists in the table named `last_used_passwords` as `text` DataType when using with active_record.
+
 
 To check the usage with mongoid visit
 [https://github.com/naveenagarwal/password_reuse_policy_testapp/tree/mogoid_module_test](https://github.com/naveenagarwal/password_reuse_policy_testapp/tree/mogoid_module_test)
